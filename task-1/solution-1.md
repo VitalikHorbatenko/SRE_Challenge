@@ -15,7 +15,8 @@
 ```awk '{print $8}' access.log | grep '^200$' | wc -l```
 ```awk '{print $8}' access.log | grep '^500$' | wc -l```
 
-> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
+> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l
+> awk '{print $8}' access.log | grep '^500$' | wc -l
 
     405
     378
