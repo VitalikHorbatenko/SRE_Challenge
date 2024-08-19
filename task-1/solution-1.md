@@ -12,7 +12,7 @@
     140 84.147.24.50
 
 2. ## Number of requests with '500' and '200' HTTP codes
- ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l```
+``` awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l ```
 
 > vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
 
