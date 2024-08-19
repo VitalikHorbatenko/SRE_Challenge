@@ -25,40 +25,43 @@ Status is pending
 
 2. #### Checking logs
 
-```kubectl describe pods```
+```bash
+kubectl describe pods
 
 ....
-    Events:
-    Type     Reason            Age   From               Message
-    ----     ------            ----  ----               -------
-    Warning  FailedScheduling  5m6s  default-scheduler  0/1 nodes are available: 1 node(s) didn't match Pod's node affinity/selector. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
-
+Events:
+Type     Reason            Age   From               Message
+----     ------            ----  ----               -------
+Warning  FailedScheduling  5m6s  default-scheduler  0/1 nodes are available: 1 node(s) didn't match Pod's node affinity/selector. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+```
 Result:  1 node(s) didn't match Pod's node affinity/selector.
 
 3. #### Locating labels in the file
 
-```cat nginx.yaml```
+```bash
+cat nginx.yaml
 
 ....
-    spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: node-role.kubernetes.io/application
-                    operator: In
-                    values:
-                    - "sretest"
+spec:
+    affinity:
+     nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+          - key: node-role.kubernetes.io/application
+           operator: In
+            values:
+            - "sretest"
 ....
-    spec:
-     selector:
-      app: sretest-service
-      type: NodePort
-      ports:
-      - protocol: TCP
-        port: 80
-        targetPort: 80
+spec:
+  selector:
+   app: sretest-service
+   type: NodePort
+   ports:
+    - protocol: TCP
+   port: 80
+   targetPort: 80
+```
 
 There are different selectors (labels) for such objects as Dedployment and Service : sretest and sretest-service.
 Besides, the pod can be run only on those nodes that have the label node-role.kubernetes.io/application=sretest
@@ -66,65 +69,72 @@ Besides, the pod can be run only on those nodes that have the label node-role.ku
 
 5. #### Checking labels on the node
 
-```$ kubectl get node minikube --show-labels | grep "node-role.kubernetes.io/application=sretest"```
+``` kubectl get node minikube --show-labels | grep "node-role.kubernetes.io/application=sretest"```
 
 no output. The lable node-role.kubernetes.io/application=sretest is missing 
 
 6. #### Creating the label on the node and fixing the label in Service
-```$ kubectl label node minikube node-role.kubernetes.io/application=sretest```
-    node/minikube labeled
+
+```bash
+kubectl label node minikube node-role.kubernetes.io/application=sretest
+node/minikube labeled
 
 ....
-    kind: Service
-    metadata:
-      name: sretest-service
-    spec:
-      selector:
-        app: sretest
+kind: Service
+metadata:
+  name: sretest-service
+  spec:
+    selector:
+     app: sretest
+```
 
 7. #### Applying changes 
-```$ kubectl apply -f nginx.yaml```
-    deployment.apps/sretest configured
-    service/sretest-service unchanged
+```bash
+kubectl apply -f nginx.yaml
+deployment.apps/sretest configured
+service/sretest-service unchanged
 
-```$ kubectl get pods```
-    NAME                      READY   STATUS              RESTARTS      AGE
-    sretest-f6cd856db-vg2g5   0/1     RunContainerError   3 (13s ago)   38m
-
+kubectl get pods
+NAME                      READY   STATUS              RESTARTS      AGE
+sretest-f6cd856db-vg2g5   0/1     RunContainerError   3 (13s ago)   38m
+```
 The container did not start.
 
-8. Returning to logs
+8. #### Returning to logs
 
-```kubectl describe pods```
+```bash
+kubectl describe pods
 
     Error: failed to start container "sretest": Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: error setting cgroup config for procHooks process: failed to write "300000": write /sys/fs/cgroup/cpu/kubepods/burstable/pod02b4c6b3-885a-4cde-86c9-137280e8caf4/sretest/cpu.cfs_quota_us: invalid argument: unknown
     Warning  BackOff           8s (x5 over 68s)     kubelet            Back-off restarting failed container sretest in pod sretest-f6cd856db-vg2g5_default(02b4c6b3-885a-4cde-86c9-137280e8caf4)
-
+```
 Looks like the container cannot be created due to issues with CPU on the node.
 
 9. #### Cheking CPU on the node and comparing with nginx.yaml
 
-```minikube ssh```
+```bash
+minikube ssh
+cat /proc/cgroups | grep cpu
+cpuset  1       37      1
+cpu     2       52      1
+cpuacct 3       37      1
 
-```cat /proc/cgroups | grep cpu```
-    cpuset  1       37      1
-    cpu     2       52      1
-    cpuacct 3       37      1
-
-```cat nginx.yaml```
+cat nginx.yaml
 ...... 
-    resources:
-              limits:
-                cpu: 3
-                memory: 128Mi
-              requests:
-                cpu: 2
-                memory: 128Mi
+resources:
+  limits:
+    cpu: 3
+    memory: 128Mi
+  requests:
+    cpu: 2
+    memory: 128Mi
+```
 
 CPU of the node (2 CPU) does not meet settings from nginx.yaml (3 CPU)
 
 10. #### Decreasing CPU in nginx.yaml and applying changes
 
+```bash
 ....
     resources:
               limits:
@@ -134,52 +144,58 @@ CPU of the node (2 CPU) does not meet settings from nginx.yaml (3 CPU)
                 cpu: 1
                 memory: 128Mi
 
-```$ kubectl apply -f nginx.yaml```
-    deployment.apps/sretest configured
-    service/sretest-service configured
+kubectl apply -f nginx.yaml
+deployment.apps/sretest configured
+service/sretest-service configured
+```
 
 
 11. #### Checking pods
-```bash $ kubectl get pods
-    NAME                       READY   STATUS    RESTARTS   AGE
-    sretest-f6cd856db-vg2g5   1/1     Running   0          19m
+```bash 
+kubectl get pods
+NAME                       READY   STATUS    RESTARTS   AGE
+sretest-f6cd856db-vg2g5   1/1     Running   0          19m
+```
 
 The container started
 
 12. #### Checking nginx in the browser
 
-```$ minikube ip```
-    192.168.49.2
+```bash
+minikube ip
+192.168.49.2
 
-```$ kubectl get services```
-    NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-    kubernetes        ClusterIP   10.96.0.1      <none>        443/TCP        90m
-    sretest-service   NodePort    10.110.45.37   <none>        80:31278/TCP   86m
+kubectl get services
+NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+kubernetes        ClusterIP   10.96.0.1      <none>        443/TCP        90m
+sretest-service   NodePort    10.110.45.37   <none>        80:31278/TCP   86m
 
 http:192.168.49.2:31278 - the site can't be reached.
-
+```
 13. #### Pinging the node from outside and inside the node.
 
-```$ ping 192.168.49.2```
+```bash
+ping 192.168.49.2
 
-   Pinging 192.168.49.2 with 32 bytes of data:
-   Request timed out.
+Pinging 192.168.49.2 with 32 bytes of data:
+Request timed out.
 
-```$ minikube ssh```
+minikube ssh
 
-```docker@minikube:~$ ping 192.168.49.2```
+docker@minikube:~$ ping 192.168.49.2
     ping 192.168.49.2
     PING 192.168.49.2 (192.168.49.2) 56(84) bytes of data.
 64 bytes from 192.168.49.2: icmp_seq=1 ttl=64 time=0.374 ms
-
+```
 The node network is not accessible from outside. 
 
 14. #### Fetching the minikube IP and a service’s NodePort to create a tunnel
 
-```$ minikube service sretest-service --url```
+```bash
+minikube service sretest-service --url
 http://127.0.0.1:52957
 ! Because you are using a Docker driver on windows, the terminal needs to be open to run it.
-
+```
 15. #### Running http://127.0.0.1:52957
 
 Welcome to nginx!
