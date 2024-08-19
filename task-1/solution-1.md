@@ -74,24 +74,24 @@ Counting nubmer of requests to wp-login.php
 
 ## **Findings:**
 
-1. A log range is from [11/Aug/2024:09:49:30] to [11/Aug/2024:09:56:12] - that is, almost 7 minutes. 2000 HTTP requests were made in 7 minutes.
+1. ### A log range is from [11/Aug/2024:09:49:30] to [11/Aug/2024:09:56:12] - that is, almost 7 minutes. 2000 HTTP requests were made in 7 minutes.
 Half of the requests came to the domain example3.com.
 
-2. Numerous requests from the same IPs during a short period of time
+2. ### Numerous requests from the same IPs during a short period of time
 Several addresses made more than 150 attempts to connect to the server in a few minutes. This may indicate an attempt to make multiple requests to different resources from the same IP address, which may also be a sign of an DDos attack or an automated scan.
 
-3. Lots of 500 errors
+3. ### Lots of 500 errors
 A fifth of all requests show a 500 error. This may be due to internal problems on the server or its overload. 
 However, we can see that 200 ok codes are slightly more than 500 codes. So the issue does not seem to be related to the incorrect work of the server. 
 
-4. Accessing wp-login.php
+4. ### Accessing wp-login.php
 Almost a third requests try to access the wp-login.php file, which is the WordPress login page.
 This could be an attempted brute-force attack to hack the admin panel. By the way, it may explain abnormal number of 500 errors on the server.
 
-5. Suspicious/malicious bots
+5. ### Suspicious/malicious bots
 There are a lot of requests from bots like AhrefsBot, MJ12bot, bingbot (more than 300 requests per each bot). Some of these bots are used for malicious activity very often.
 
-6. The presense of 499 HTTP codes.
+6. ### The presense of 499 HTTP codes.
 The HTTP 499 error typically occurs when a client terminates the connection before the server is able to respond, such as when a user cancels a request or navigates away from a page before it fully loads.
 This could be a sign of malicious activity by a bot or other automated system.
 
