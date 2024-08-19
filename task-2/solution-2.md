@@ -4,16 +4,18 @@ Creating a new deployment in Minikube using a configuration from nginx.yaml
 
 1. #### Checking status of deployments, services, and pods
 
-```bash kubectl get deployments
-    NAME      READY   UP-TO-DATE   AVAILABLE   AGE
-    sretest   0/1     1            0           39s 
-```
+```bash
+kubectl get deployments
+NAME      READY   UP-TO-DATE   AVAILABLE   AGE
+sretest   0/1     1            0           39s 
 
-```bash kubectl get services```
-    NAME              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
-    kubernetes        ClusterIP   10.96.0.1       <none>        443/TCP        2m27s
-    sretest-service   NodePort    10.99.109.129   <none>        80:31756/TCP   67s
-```
+
+```bash
+kubectl get services
+NAME              TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+kubernetes        ClusterIP   10.96.0.1       <none>        443/TCP        2m27s
+sretest-service   NodePort    10.99.109.129   <none>        80:31756/TCP   67s
+
 
 ```bash kubectl get pods```
     NAME                      READY   STATUS    RESTARTS   AGE
