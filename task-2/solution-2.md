@@ -19,7 +19,7 @@ sretest-service   NodePort    10.99.109.129   <none>        80:31756/TCP   67s
 kubectl get pods
 NAME                      READY   STATUS    RESTARTS   AGE
 sretest-f6cd856db-vg2g5   0/1     Pending   0          93s
-
+```
 
 Status is pending
 
