@@ -136,7 +136,7 @@ CPU of the node (2 CPU) does not meet settings from nginx.yaml (3 CPU)
 
 
 11. #### Checking pods
-```$ kubectl get pods```
+```bash $ kubectl get pods
     NAME                       READY   STATUS    RESTARTS   AGE
     sretest-f6cd856db-vg2g5   1/1     Running   0          19m
 
