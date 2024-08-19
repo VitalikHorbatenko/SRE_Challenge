@@ -1,6 +1,6 @@
-## **Gathered information:**
+# Gathered information:
 
-1. # Top 5 IP addresses requests come from 
+1. ## Top 5 IP addresses requests come from 
   ```awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5```
 
 > vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5
@@ -11,14 +11,14 @@
     145 3.58.246.203
     140 84.147.24.50
 
-2. # Number of requests with '500' and '200' HTTP codes
+2. ## Number of requests with '500' and '200' HTTP codes
  ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l```
 
 > vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
  405
  378
 
-3. # Number of requests per minute 
+3. ## Number of requests per minute 
   ```awk '{print substr($4, 2, 17)}' access.log | sort | uniq -c```
 
 The syntax is substring($0, start, length), where $0 is the string, 
@@ -33,7 +33,7 @@ start is the position where the substring starts, and length is the length of th
     332 11/Aug/2024:09:55
     145 11/Aug/2024:09:56
 
-4. # Which domain is the most requested one? 
+4. ## Which domain is the most requested one? 
   ```awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1```
  
 -F or fs means --field-separator=fs
@@ -41,7 +41,7 @@ start is the position where the substring starts, and length is the length of th
 > vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1
    1036 example3.com
 
-5. # Do all the requests to '/page.php' result in '499' code? 
+5. ## Do all the requests to '/page.php' result in '499' code? 
   ```echo "number of HTTP code 499:"; awk '$6 ~ /\/page\.php/ && $8 == 499' access.log | wc -l; echo "number of the requests to page.php:"; awk '$6 ~ /\/page\.php/' access.log | wc -l``` 
 
 ~: checks a field against a regular expression.
@@ -52,7 +52,7 @@ start is the position where the substring starts, and length is the length of th
  number of the requests to page.php:
  689
 
-6. Additional commands run
+6. ## Additional commands run
 
 ```grep -i 'bot\|crawl\|spider' access.log | awk '{print $12}' | sort | uniq -c```
     347 AhrefsBot/7.0;
