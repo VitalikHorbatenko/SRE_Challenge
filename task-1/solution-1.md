@@ -1,55 +1,55 @@
-Gathered information:
+##Gathered information:
 
-1. awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5
+1. ```awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5```
 
-vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5
-    278 98.126.83.64
-    248 13.212.235.168
-    153 26.55.70.11
-    145 3.58.246.203
-    140 84.147.24.50
+> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -5
+>    278 98.126.83.64
+>    248 13.212.235.168
+>    153 26.55.70.11
+>    145 3.58.246.203
+>    140 84.147.24.50
 
-2. awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
+2. ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l```
 
-vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
-405
-378
+> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l
+> 405
+> 378
 
-3. awk '{print substr($4, 2, 17)}' access.log | sort | uniq -c
+3. ```awk '{print substr($4, 2, 17)}' access.log | sort | uniq -c```
 
 The syntax is substring($0, start, length), where $0 is the string, 
 start is the position where the substring starts, and length is the length of the substring.
 
-vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print substr($4, 2, 17)}' access.log | sort | uniq -c
-    246 11/Aug/2024:09:49
-    392 11/Aug/2024:09:50
-    273 11/Aug/2024:09:52
-    371 11/Aug/2024:09:53
-    241 11/Aug/2024:09:54
-    332 11/Aug/2024:09:55
-    145 11/Aug/2024:09:56
+> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print substr($4, 2, 17)}' access.log | sort | uniq -c
+>    246 11/Aug/2024:09:49
+>    392 11/Aug/2024:09:50
+>    273 11/Aug/2024:09:52
+>    371 11/Aug/2024:09:53
+>    241 11/Aug/2024:09:54
+>    332 11/Aug/2024:09:55
+>    145 11/Aug/2024:09:56
 
-4. awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1
+4. ```awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1```
  
 
 -F or fs means --field-separator=fs
 
-vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1
-   1036 example3.com
+> vitalik@ns2:~/SRE_Challenge/task-1$ awk '{print $6}' access.log | awk -F[/] '{print $1}' | sort | uniq -c | sort -nr | head -1
+>   1036 example3.com
 
-5. echo "number of HTTP code 499:"; awk '$6 ~ /\/page\.php/ && $8 == 499' access.log | wc -l; echo "number of the requests to page.php:"; awk '$6 ~ /\/page\.php/' access.log | wc -l 
+5. ```echo "number of HTTP code 499:"; awk '$6 ~ /\/page\.php/ && $8 == 499' access.log | wc -l; echo "number of the requests to page.php:"; awk '$6 ~ /\/page\.php/' access.log | wc -l``` 
 
 ~: checks a field against a regular expression.
 
-vitalik@ns2:~/SRE_Challenge/task-1$ echo "number of HTTP code 499:"; awk '$6 ~ /\/page\.php/ && $8 == 499' access.log | wc -l; echo "number of the requests to page.php:"; awk '$6 ~ /\/page\.php/' access.log | wc -l
-number of HTTP code 499:
-144
-number of the requests to page.php:
-689
+> vitalik@ns2:~/SRE_Challenge/task-1$ echo "number of HTTP code 499:"; awk '$6 ~ /\/page\.php/ && $8 == 499' access.log | wc -l; echo "number of the request  to page.php:"; awk '$6 ~ /\/page\.php/' access.log | wc -l
+> number of HTTP code 499:
+> 144
+> number of the requests to page.php:
+> 689
 
 6. Additional commands run
 
-grep -i 'bot\|crawl\|spider' access.log | awk '{print $12}' | sort | uniq -c
+```grep -i 'bot\|crawl\|spider' access.log | awk '{print $12}' | sort | uniq -c```
     347 AhrefsBot/7.0;
     336 MJ12bot/v1.4.8;
     330 bingbot/2.0;
@@ -63,11 +63,11 @@ An origin of the top IP adresses:
  140 84.147.24.50 - Deutsche Telekom AG
 
 Counting nubmer of requests to wp-login.php
-vitalik@ns2:~/SRE_Challenge/task-1$ grep "/wp-login.php" access.log | wc -l
+```grep "/wp-login.php" access.log | wc -l```
 641
 
 
-Findings:
+##Findings:
 
 1. A log range is from [11/Aug/2024:09:49:30] to [11/Aug/2024:09:56:12] - that is, almost 7 minutes. 2000 HTTP requests were made in 7 minutes.
 Half of the requests came to the domain example3.com.
@@ -90,6 +90,6 @@ There are a lot of requests from bots like AhrefsBot, MJ12bot, bingbot (more tha
 The HTTP 499 error typically occurs when a client terminates the connection before the server is able to respond, such as when a user cancels a request or navigates away from a page before it fully loads.
 This could be a sign of malicious activity by a bot or other automated system.
 
-Summary:
+##Summary:
 It looks like we witnessed a fragment of a DDoS attack, a brute force attack or a vulnerability scan.
 
