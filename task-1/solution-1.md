@@ -13,7 +13,7 @@
 
 2. ## Number of requests with '500' and '200' HTTP codes
 
-  ```awk '{print &8}' access.log | grep '^200$' | wc -l```
+  ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' | grep '^200$' | wc -l```
 
     405
     378
