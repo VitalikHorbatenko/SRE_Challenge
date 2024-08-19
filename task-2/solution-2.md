@@ -158,8 +158,8 @@ http:192.168.49.2:31278 - the site can't be reached.
 
 ```$ ping 192.168.49.2```
 
-    Pinging 192.168.49.2 with 32 bytes of data:
-    Request timed out.
+   Pinging 192.168.49.2 with 32 bytes of data:
+   Request timed out.
 
 ```$ minikube ssh```
 
