@@ -13,7 +13,7 @@
 
 2. ## Number of requests with '500' and '200' HTTP codes
 
-  ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' | grep '^200$' | wc -l```
+  ```awk '{print $8}' access.log | grep '^200$' | wc -l; awk '{print $8}' access.log | grep '^500$' | wc -l```
 
     405
     378
@@ -101,6 +101,6 @@ There are a lot of requests from bots like AhrefsBot, MJ12bot, bingbot (more tha
 The HTTP 499 error typically occurs when a client terminates the connection before the server is able to respond, such as when a user cancels a request or navigates away from a page before it fully loads.
 This could be a sign of malicious activity by a bot or other automated system.
 
-## **Summary:**
+## **The Summary:**
 It looks like we witnessed a fragment of a DDoS attack, a brute force attack or a vulnerability scan.
 

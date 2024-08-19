@@ -49,7 +49,7 @@ TIME_TOTAL=$(curl -o /dev/null -s -w "%{time_total}\n" $URL)
 # Checking if the website load exceeds the treshold
 # bc -l is used to handle floating-point comparisons
  if (( $(echo "$TIME_TOTAL > $THRESHOLD" | bc -l) )); then
-  # If the load time exceeds the treshold, the following message is sent to Slack
+  # If the load time exceeds the treshold, the following message is sent to Slack.
   MESSAGE="⚠️ The load time of $URL was $TIME_TOTAL seconds, which exceeds the threshold of $THRESHOLD seconds."
 
   # Sending the message via Incoming Webhook to Slack

@@ -1,6 +1,7 @@
 Creating a new deployment in Minikube using a configuration from nginx.yaml
-```kubectl apply -f nginx.yaml```
-
+```bash
+kubectl apply -f nginx.yaml
+```
 
 1. #### Checking status of deployments, services, and pods
 
